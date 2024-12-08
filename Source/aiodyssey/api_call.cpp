@@ -2,26 +2,7 @@
 
 #include "api_call.h"
 
-// Sets default values
-Aapi_call::Aapi_call()
-{
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void Aapi_call::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-// Called every frame
-void Aapi_call::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void Aapi_call::CallAPI(FString Data) {
+FString Uapi_call::CallAPI(FString Data) {
 
 	FString InFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Saved") / TEXT("in_data.txt")); //TODO: FIX
 	FString OutFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Saved") / TEXT("out_data.txt"));
@@ -30,10 +11,10 @@ void Aapi_call::CallAPI(FString Data) {
 	{
 		UE_LOG(LogTemp, Error, TEXT("Write to InFile Failed"));
 		// destroy here?
-		return;
+		return "SaveString Failed!";
 	}
 
-	FString Script = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Scripts") / TEXT("helloworld.py"));
+	FString Script = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Scripts") / TEXT("llm_int.py"));
 	FString CommandLine = FString::Printf(TEXT("python \"%s\" \"%s\" \"%s\""), *Script, *InFilePath, *OutFilePath);
 	UE_LOG(LogTemp, Warning, TEXT("Running cmdline: %s"), *CommandLine);
 	RunPyScript(CommandLine);
@@ -47,9 +28,10 @@ void Aapi_call::CallAPI(FString Data) {
 	{
 		UE_LOG(LogTemp, Error, TEXT("Outfile Read Failed."));
 	}
+	return OutFileContent;
 }
 
-void Aapi_call::RunPyScript(const FString& CommandLine) {
+void Uapi_call::RunPyScript(const FString& CommandLine) {
 
 	void* PipeRead = nullptr;
 	void* PipeWrite = nullptr;
@@ -64,16 +46,10 @@ void Aapi_call::RunPyScript(const FString& CommandLine) {
 		FProcHandle ProcessHandle = FPlatformProcess::CreateProc(*Executable, *Arguments, true, true, true, nullptr, 0, nullptr, PipeWrite, PipeRead);
 
 		if (ProcessHandle.IsValid()) {
-			FString Output;
-			while (FPlatformProcess::IsProcRunning(ProcessHandle)) {
-				FString PipeOutput = FPlatformProcess::ReadPipe(PipeRead);
-				if (!PipeOutput.IsEmpty()) {
-					Output += PipeOutput;
-				}
-			}
-
-			FPlatformProcess::ClosePipe(PipeRead, PipeWrite);
 			FPlatformProcess::WaitForProc(ProcessHandle);
+
+			FString Output = FPlatformProcess::ReadPipe(PipeRead);
+			FPlatformProcess::ClosePipe(PipeRead, PipeWrite);
 
 			UE_LOG(LogTemp, Warning, TEXT("PyScript text: %s"), *Output);
 		}

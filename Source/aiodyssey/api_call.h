@@ -3,30 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "UObject/NoExportTypes.h"
 #include "api_call.generated.h"
 
-UCLASS()
-class AIODYSSEY_API Aapi_call : public AActor
+UCLASS(Blueprintable)
+class AIODYSSEY_API Uapi_call : public UBlueprintFunctionLibrary
 {
-	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	Aapi_call();
+    GENERATED_BODY()
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION(BlueprintCallable, Category="API_CALL")
-	void CallAPI(FString Data);
+public:
+    UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject"))
+    static FString CallAPI(FString Data);
 
 private:
-	void RunPyScript(const FString& CmdLine);
-
+    static void RunPyScript(const FString& CmdLine);
 };

@@ -1,0 +1,10 @@
+{
+  "id": "0",
+  "type": "function",
+  "function": {
+    "name": "talk",
+    "arguments": {
+      "dialogue": "Hello there, traveler! What brings you to these parts?"
+    }
+  }
+}

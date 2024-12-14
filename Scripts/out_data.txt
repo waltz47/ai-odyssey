@@ -4,7 +4,7 @@
   "function": {
     "name": "talk",
     "arguments": {
-      "dialogue": "Hello there, traveler! What brings you to these parts?"
+      "dialogue": "You asked me to tell you about the world, traveler."
     }
   }
 }

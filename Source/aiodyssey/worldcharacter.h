@@ -4,7 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <map>
+#include <string>
+#include <vector>
+#include "Async/Async.h"
+#include "llm_fn.h"
+#include "json_parser.h"
 #include "worldcharacter.generated.h"
+
+using std::map;
+using std::string;
+using std::vector;
 
 UCLASS()
 class AIODYSSEY_API Aworldcharacter : public ACharacter
@@ -24,6 +34,28 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void DisplayDialogue(); //display dialogue on screen via UI
+
+	virtual FString Interact();
+	void GetRecordedChar(FString&);
+	void EnableRecording() { isrecording = true; }
+	void ResetRecording() { isrecording = false; recording = FString(""); }
+	void OnRecordingAccept();
+
+	UFUNCTION(BlueprintCallable)
+	FString GetDialogueToDisplay();
+
+	std::vector<std::pair<std::string, std::string>> history; //message history
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FString lastDialogue;
+
+	FString recording;
+	bool isrecording = false;
+
+	TFuture<FString> Future;
 
 };

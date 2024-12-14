@@ -38,7 +38,7 @@ std::map<std::string, std::string> JsonParser::getFunctionArguments() const {
 
     return args;
 }
-FString JsonParser::MapToJSONString(std::map<std::string, std::string>& history)
+FString JsonParser::MapToJSONString(std::vector<std::pair<std::string, std::string>>& history)
 {
     TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
 

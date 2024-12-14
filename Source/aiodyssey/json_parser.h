@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include "rapidjson/document.h"
 
 class JsonParser {
@@ -18,7 +19,7 @@ public:
     // Returns a map of the function arguments where the key is the argument name and value is its value
     std::map<std::string, std::string> getFunctionArguments() const;
 
-    static FString MapToJSONString(std::map<std::string, std::string>& history);
+    static FString MapToJSONString(std::vector<std::pair<std::string, std::string>>& history);
     
 
 private:

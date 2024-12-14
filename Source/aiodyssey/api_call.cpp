@@ -4,8 +4,8 @@
 
 FString Uapi_call::CallAPI(FString Data) {
 
-	FString InFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Saved") / TEXT("in_data.txt")); //TODO: FIX
-	FString OutFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Saved") / TEXT("out_data.txt"));
+	FString InFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Scripts") / TEXT("in_data.txt")); //TODO: FIX
+	FString OutFilePath = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir() / TEXT("Scripts") / TEXT("out_data.txt"));
 
 	if (!FFileHelper::SaveStringToFile(Data, *InFilePath))
 	{

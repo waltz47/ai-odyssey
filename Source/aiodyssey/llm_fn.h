@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include <map>
 #include <string>
+#include <vector>
 #include "llm_fn.generated.h"
 
 using std::map;
@@ -17,6 +18,6 @@ class AIODYSSEY_API Ullm_fn : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	FString GetLLMResponse(std::map<std::string, std::string>& history); //get response and append to history. only called by ai chars
+	static FString GetLLMResponse(std::vector<std::pair<std::string, std::string>>& history); //get response and append to history. only called by ai chars
 	
 };
